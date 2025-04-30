@@ -46,16 +46,18 @@ petname = input ( 'Enter a Name for Your Dog: ')
 print ('Some rules for this game: Your dog will experience several different feelings including, happiness, fatigue, hunger, need to play and need to relieve themselves. It is your job to keep your dog happy, not angry, not fatigued, well fed and played with. As the days progress you will get to pick one action to do every day. You must make careful descions to ensure that your dog is getting the proper care. Each day you get the choice to either let your dog play, rest, eat, or relieve themselves. For each descion you must input a CAPITAL LETTER.')
 # This takes the input for the name of the dog
 
+def dogname(petname):
+                #defined function serves as a name holder
+                return print("GAME OVER!!! your dog " + petname + " needs better care than that!!!")
 
-# happiness is 1-100, hunger is a boolean, fatigue is 1-50, does it need to play is 1-10, does it need to use the bathroom is boolean, anger is 1-10
+# happiness is 1-100, hunger is a boolean, fatigue is 1-100, does it need to play is 1-100, does it need to use the bathroom is boolean
 
 #Animal Stats start of game
 Animal_stats = {'happiness' : 50,
           'hunger' : False,
-          'fatigue' : 5,
-          'play' : 5,
+          'fatigue' : 40,
+          'play' : 60,
           'bathroom' : False,
-          'anger' : 2,
           'dogAlive' : True,
           'days' : 1}
 
@@ -63,21 +65,26 @@ Options = {'optionA' : 'A',
            'optionB' : 'B',
            'optionC' : 'C',
            'optionD' : 'D',
+           'optionI' : 'I',
            'optionX' : 'X',
            }
 
 
-#print((Animal_stats['happiness']))
-#if (Animal_stats['days']) is even:
+min = 0
 
+max = 100
+
+#main game loop
 while (Animal_stats['dogAlive']):
           print('Hello, today is day', (Animal_stats['days']))
-          print('Happiness Level is: ', (Animal_stats['happiness']))
+          print('Happiness Level is: ', (Animal_stats['happiness']),'/ 100')
           print('Hunger is: ', (Animal_stats['hunger']))
-          print('Fatigue Level is: ', (Animal_stats['fatigue']))
-          print('Need to Play Level is: ', (Animal_stats['play']))
+          print('Fatigue Level is: ', (Animal_stats['fatigue']),'/ 100')
+          print('Need to Play Level is: ', (Animal_stats['play']),'/ 100')
           print('Need for the Bathroom is: ', (Animal_stats['bathroom']))
-          print('Anger Level is: ', (Animal_stats['anger']))
+
+
+          
           dailyTask = input('''What would you like to do with your dog today?
                             
                             A: Play
@@ -85,37 +92,88 @@ while (Animal_stats['dogAlive']):
                             C: Bathroom
                             D: Feed
                            
+                            I: info/statistic 
+                            # (nerd stuff)
                             input letter of your choice:
                             ''')
                             
                             
           if dailyTask == (Options['optionA']):
             print('You played with your dog!')
-            (Animal_stats['play']) -= 1
-            (Animal_stats['fatigue']) += 5
+            (Animal_stats['play']) -= 10
+            (Animal_stats['fatigue']) += 10
+            (Animal_stats['happiness']) += 10
           elif dailyTask == (Options['optionB']):
             print('Your dog took a nap!')
-            (Animal_stats['fatigue']) -= 5
-            (Animal_stats['play']) += 1
+            (Animal_stats['fatigue']) -= 10
+            (Animal_stats['play']) += 10
           elif dailyTask == (Options['optionC']):
             print('Your dog has relieved itself!')
             (Animal_stats['bathroom']) = False
-            (Animal_stats['anger']) -= 1
           elif dailyTask == (Options['optionD']):
             print('You have fed your dog!')
             (Animal_stats['hunger']) = False
+          elif dailyTask == (Options['optionI']):
+            print('Option A is for playing with the dog. When you play with your dog its need for play decreases, its fatigue increases and its happiness increases.')
+            print('Option B is for letting your dog rest. When you let your dog rest its fatigue level decreases and its need for play increases.')
+            print('Option C is for letting your dog relieve themseleves. When you let your dog relieve themselves theyre need for the bathroom decreases as well as their anger level')
+            print('Option D is for feeding your dog. When you feed you dog its need for the bathroom becomes true and its hunger becomes false')
+            print('Option X is to quit the game, this will just end the game')
+            print('Option I is obviously for info')
           else:
-            print('Game Over! your dog died stupidhead')
-            break
-          (Animal_stats['days']) = (Animal_stats['days']) + 1
-            
-if (Animal_stats['fatigue']) > 40 and (Animal_stats['bathroom']) == True and (Animal_stats['hunger']) == True:
-     (Animal_stats['anger']) = (Animal_stats['anger']) + 1
-else:
-     (Animal_stats['happiness']) = (Animal_stats['hunger'])
-     (Animal_stats['hunger']) = (Animal_stats['hunger']) 
+             GameEnd = dogname(petname)
+             break
+          
+          
+          if (Animal_stats['happiness']) > 100:
+              (Animal_stats['happiness']) = max
+          elif (Animal_stats['happiness']) < 0:
+            (Animal_stats['happiness']) = min
+          else: 
+            (Animal_stats['happiness']) = (Animal_stats['happiness'])
 
-            
+          if (Animal_stats['fatigue']) > 100:
+              (Animal_stats['fatigue']) = max
+          elif (Animal_stats['fatigue']) < 0:
+            (Animal_stats['fatigue']) = min
+          else: 
+            (Animal_stats['fatigue']) = (Animal_stats['fatigue'])
+
+          if (Animal_stats['play']) > 100:
+            (Animal_stats['play']) = max
+          elif (Animal_stats['play']) < 0:
+            (Animal_stats['play']) = min
+          else: 
+            (Animal_stats['play']) = (Animal_stats['play'])     
+          (Animal_stats['days']) = (Animal_stats['days']) + 1
+          
+          #Day bathroom cycle (I FIXED THiS or idk FINIHSED IT BUT THIS WORKS NOW)
+          if (Animal_stats['fatigue']) > 75 and (Animal_stats['bathroom']) == True and (Animal_stats['hunger']) == True:
+            (Animal_stats['happiness']) -= 10
+          else:
+            (Animal_stats['happiness']) = (Animal_stats['happiness'])
+            (Animal_stats['hunger']) = (Animal_stats['hunger']) 
+
+          dividend = (Animal_stats['days'])
+          divisor = 2
+          Divsum = dividend % divisor
+          if Divsum == 1:
+             (Animal_stats['hunger']) = True
+             (Animal_stats['bathroom']) = True
+          else:
+            (Animal_stats['hunger']) = (Animal_stats['hunger'])
+            (Animal_stats['bathroom']) = (Animal_stats['bathroom'])
+          
+          # yeah this code is redundant and messy, i just needed an excuse to use the dogAlive dictionary varibale because it is lowkey useless but whatevs
+          if (Animal_stats['fatigue']) == 100 or (Animal_stats['play']) == 0:
+            (Animal_stats['dogAlive']) = False
+
+          if (Animal_stats['dogAlive']) == False:
+            GameEnd = dogname(petname)
+             
+
+
+
 
 #def is_dog_alive(Animal_stats):
 #          if current_happy < 10 and current_fatigue > 40 and current_anger > 8:
@@ -125,11 +183,3 @@ else:
 #          return (Animal_stats[dogAlive])
 
 # What would you like to do today? Input the letter to do the action
-
-# Dog: happiness(x) Hunger(x)  Hygiene(x) Ect. (the x is in place for the level of that variable)
-
-# A: play
-# B: Take a nap
-# C: shower
-# D: feed dog
-# X: quit game 
